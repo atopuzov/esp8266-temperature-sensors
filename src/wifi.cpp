@@ -17,7 +17,7 @@ void wifiConnectCallback(const WiFiEventStationModeGotIP& event) {
 }
 
 void wifiDisconnectCallback(const WiFiEventStationModeDisconnected& event) {
-  Serial.println("Wifi disconnected.");
+  Serial.println(F("Wifi disconnected."));
   wifiConnected = false;
 }
 

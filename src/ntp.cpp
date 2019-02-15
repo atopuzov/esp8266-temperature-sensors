@@ -8,16 +8,16 @@ bool ntpSyncStarted = false;
 
 void processNtpSyncEvent (NTPSyncEvent_t ntpEvent) {
   if (ntpEvent) {
-    Serial.print ("Time Sync error: ");
+    Serial.print(F("Time Sync error: "));
 
     if (ntpEvent == noResponse)
-      Serial.println ("NTP server not reachable");
+      Serial.println(F("NTP server not reachable."));
     else if (ntpEvent == invalidAddress)
-      Serial.println ("Invalid NTP server address");
+      Serial.println(F("Invalid NTP server address."));
 
   } else {
-    Serial.print ("Got NTP time: ");
-    Serial.println (NTP.getTimeDateString (NTP.getLastNTPSync ()));
+    Serial.print(F("Got NTP time: "));
+    Serial.println(NTP.getTimeDateString (NTP.getLastNTPSync ()));
   }
 }
 

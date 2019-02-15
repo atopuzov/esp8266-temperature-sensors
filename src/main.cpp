@@ -8,6 +8,7 @@
 #include "measure.h"
 #include "mqtt.h"
 #include "web.h"
+#include "mdns.h"
 
 void blink_led();
 String macToStr(const uint8_t* mac);
@@ -36,6 +37,7 @@ void setup()
   ntpSetup();
   mqttSetup();
   webSetup();
+  mdnsSetup();
   sensorsSetup();
 };
 
@@ -64,6 +66,7 @@ void loop() {
   if (ntpSyncStarted && not wifiConnected)
     ntpStop();
 
+
   if (ntpSyncEventTriggered) {
     processNtpSyncEvent (ntpEvent);
     ntpSyncEventTriggered = false;
@@ -77,6 +80,8 @@ void loop() {
   };
 
   if (wifiConnected) {
+    MDNS.update();
+
     if (!mqttClient.connected()) {
       mqttReconnect();
     } else {

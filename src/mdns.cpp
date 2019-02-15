@@ -1,4 +1,5 @@
-#include <ESP8266mDNS.h>
+#include "mdns.h"
+#include "web.h"
 
 extern String clientName;
 
@@ -16,10 +17,13 @@ extern String clientName;
 // };
 
 // Sets up the mDNS stack
-void setup_mdns() {
+void mdnsSetup() {
   if (!MDNS.begin(clientName.c_str())) {
     Serial.println("Error setting up mDNS");
   } else {
     Serial.println("mDNS setup finished");
   };
+
+  MDNS.addService("prometheus-http", "tcp", HTTP_PORT);
+  MDNS.addService("http", "tcp", HTTP_PORT);
 }

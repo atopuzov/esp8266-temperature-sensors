@@ -22,6 +22,7 @@ void sensorsSetup() {
   haveBME = hasPressure = BMESensor.begin();
   haveSHT = SHTSensor.get() == 0;
 
+  takeMeasurement();
   // Every MEASURE_INTERVAL mark temperature measurment
   tempMeasureScheduler.attach(MEASURE_INTERVAL, []() {measureTemperatureEventTriggered = true;});
 };

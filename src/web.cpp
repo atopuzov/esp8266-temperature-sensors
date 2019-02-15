@@ -2,9 +2,13 @@
 #include "measure.h"
 #include "mqtt.h"
 
+
 AsyncWebServer webServer(HTTP_PORT);
 
 void webSetup() {
+  webServer.addHandler(new SPIFFSEditor("admin", "admin"));
+
+  // Prometheus metrics
   webServer.on("/metrics", HTTP_GET,
             [](AsyncWebServerRequest * request) {
               AsyncResponseStream *response = request->beginResponseStream("text/prometheus; version=0.4");
@@ -16,6 +20,12 @@ void webSetup() {
               response->print("# HELP humidity_p Relative humidity\n");
               response->print("# TYPE humidity_p gauge\n");
               response->printf("humidity_p{client=\"%s\"} %f\n\n", clientName.c_str(), humidity);
+
+              if (hasPressure) {
+                response->print("# HELP pressure_hpa Pressure in hPa\n");
+                response->print("# TYPE pressure_hpa gauge\n");
+                response->printf("pressure_hpa{client=\"%s\"} %f\n\n", clientName.c_str(), pressure);
+              };
 
               response->print("# HELP wifi_rssi_dbm Received Signal Strength Indication, dBm\n");
               response->print("# TYPE wifi_rssi_dbm counter\n");

@@ -1,20 +1,22 @@
 #include "mdns.h"
+#include "mqtt.h"
 #include "web.h"
 
 extern String clientName;
 
-// // Configure MQTT server from mDNS
-// bool query_mdns (char *server, char *port) {
-//   Serial.println("Sending mDNS Query");
+// Configure MQTT server from mDNS
+bool mdnsDiscoverMqtt () {
+  Serial.println("Sending mDNS Query");
 
-//   int numberOfMQTTHosts = MDNS.queryService("mqtt", "tcp");
-//   if (numberOfMQTTHosts < 1)
-//     return false;
+  int numberOfMQTTHosts = MDNS.queryService("mqtt", "tcp");
+  if (numberOfMQTTHosts < 1)
+    return false;
 
-//   *server = MDNS.IP(0);
-//   *port = MDNS.port(0);
-//   return true;
-// };
+  // Returns the first found MQTT server
+  // strcpy(mqttServer, MDNS.IP(0));
+  mqttPort = MDNS.port(0);
+  return true;
+};
 
 // Sets up the mDNS stack
 void mdnsSetup() {

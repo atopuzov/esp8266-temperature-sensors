@@ -4,6 +4,7 @@
 #define MY_WEB_H
 
 #include <ESPAsyncWebServer.h>
+#include <SPIFFSEditor.h>
 
 #define HTTP_PORT 80
 

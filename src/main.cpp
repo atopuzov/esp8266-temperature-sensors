@@ -7,6 +7,7 @@
 #include "ntp.h"
 #include "measure.h"
 #include "mqtt.h"
+#include "web.h"
 
 void blink_led();
 String macToStr(const uint8_t* mac);
@@ -34,6 +35,7 @@ void setup()
   wifiSetup();
   ntpSetup();
   mqttSetup();
+  webSetup();
   sensorsSetup();
 };
 

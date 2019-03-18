@@ -48,7 +48,7 @@ void publishTemperature () {
   if (hasPressure) {
     JsonData["pressure"] = pressure;
   };
-  JsonData["timestamp"] = timestamp;
+  // JsonData["timestamp"] = timestamp;
   JsonData.printTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
 
   blink_led();

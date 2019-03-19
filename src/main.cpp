@@ -60,18 +60,6 @@ void loop() {
   if (not wifiConnected)
     wifiConnect();
 
-  if (not ntpSyncStarted && wifiConnected)
-    ntpStart();
-
-  if (ntpSyncStarted && not wifiConnected)
-    ntpStop();
-
-
-  if (ntpSyncEventTriggered) {
-    processNtpSyncEvent (ntpEvent);
-    ntpSyncEventTriggered = false;
-  };
-
   // Ticker marked
   bool measured = false;
   if (measureTemperatureEventTriggered) {
@@ -82,7 +70,7 @@ void loop() {
   if (wifiConnected) {
     MDNS.update();
 
-    if (!mqttClient.connected()) {
+    if (ntpTimeSynced() && !mqttClient.connected()) {
       mqttReconnect();
     } else {
       mqttClient.loop(); // MQTT loop

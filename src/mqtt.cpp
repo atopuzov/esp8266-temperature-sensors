@@ -15,14 +15,15 @@ int  mqttPort         = 0;
 unsigned long lastReconnectAttempt = 0;
 BearSSL::X509List cert(dst_root_ca_x3);
 
-
 void mqttSetup() {
   // Faster but less secure ciphers
-  std::vector<uint16_t> myCustomList = { BR_TLS_RSA_WITH_AES_256_CBC_SHA256, BR_TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, BR_TLS_RSA_WITH_3DES_EDE_CBC_SHA };
+  std::vector<uint16_t> myCustomList =
+    { BR_TLS_RSA_WITH_AES_256_CBC_SHA256,
+      BR_TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+      BR_TLS_RSA_WITH_3DES_EDE_CBC_SHA };
   wifiClient.setCiphers(myCustomList);
 
   wifiClient.setTrustAnchors(&cert);
-  // wifiClient.setInsecure();
   mqttClient.setServer(mqttServer, mqttPort);
 };
 

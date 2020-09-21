@@ -1,4 +1,6 @@
+.direnv
+.pio
 .pioenvs
 .piolibdeps
 .platformio
-.direnv
+.vscode

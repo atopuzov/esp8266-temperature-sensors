@@ -1,7 +1,7 @@
 
 .PHONY: default
 default:
-	platformio run
+	platformio run -v
 
 .PHONY: firmware
 firmware:

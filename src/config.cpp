@@ -12,30 +12,16 @@ bool loadConfig() {
     return false;
   }
 
-  size_t size = configFile.size();
-  // if (size > 1024) {
-  //   Serial.println("Config file size is too large.");
-  //   return false;
-  // }
+  DynamicJsonDocument json(1024);
+  auto error = deserializeJson(json, configFile);
 
-  // Allocate a buffer to store contents of the file.
-  std::unique_ptr<char[]> buf(new char[size]);
-
-  // We don't use String here because ArduinoJson library requires the input
-  // buffer to be mutable. If you don't use ArduinoJson, you may as well
-  // use configFile.readString instead.
-  configFile.readBytes(buf.get(), size);
-
-  DynamicJsonBuffer jsonBuffer;
-  JsonObject& json = jsonBuffer.parseObject(buf.get());
-
-  if (!json.success()) {
+  if (error) {
     Serial.println(F("Failed to parse config file."));
     return false;
   }
 
   // Load wifi configuration
-  JsonArray& wifi = json["wifi"];
+  auto wifi = json["wifi"];
 
   for (unsigned int i = 0; i < wifi.size(); i++) {
     const char* ssid      = wifi[i]["ssid"];
@@ -50,5 +36,6 @@ bool loadConfig() {
   strcpy(mqttTopic,    json["mqtt"]["topic"]);
   mqttPort =           json["mqtt"]["port"];
 
+  configFile.close();
   return true;
 }

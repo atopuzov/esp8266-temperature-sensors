@@ -15,9 +15,9 @@ String macToStr(const uint8_t* mac);
 
 String clientName = "";
 
-StaticJsonBuffer<200> jsonBuffer;
-JsonObject& JsonData = jsonBuffer.createObject();
+StaticJsonDocument<200> jsonDoc;
 char JSONmessageBuffer[120];
+
 
 void setup()
 {
@@ -29,7 +29,7 @@ void setup()
   unsigned char mac[6];
   WiFi.macAddress(mac);
   clientName += macToStr(mac);
-  JsonData["client"] = clientName;
+  jsonDoc["client"] = clientName;
 
   loadConfig();
 
@@ -43,13 +43,14 @@ void setup()
 
 // Publishes the measured temperature and humidity to MQTT
 void publishTemperature () {
-  JsonData["temperature"] = temperature;
-  JsonData["humidity"] = humidity;
+  jsonDoc["temperature"] = temperature;
+  jsonDoc["humidity"] = humidity;
   if (hasPressure) {
-    JsonData["pressure"] = pressure;
+    jsonDoc["pressure"] = pressure;
   };
   // JsonData["timestamp"] = timestamp;
-  JsonData.printTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+
+  serializeJson(jsonDoc, JSONmessageBuffer);
 
   blink_led();
   Serial.printf("Publishing to MQTT: %s\n", JSONmessageBuffer);
@@ -62,10 +63,11 @@ void loop() {
 
   // Ticker marked
   bool measured = false;
-  if (measureTemperatureEventTriggered) {
-    measured = takeMeasurement();
-    measureTemperatureEventTriggered = false;
-  };
+  // if (measureTemperatureEventTriggered) {
+  //   measured = takeMeasurement();
+  //   measureTemperatureEventTriggered = false;
+  // };
+  measured = takeMeasurement();
 
   if (wifiConnected) {
     MDNS.update();

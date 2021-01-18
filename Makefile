@@ -3,6 +3,9 @@
 default:
 	platformio run -v
 
+.PHONY: all
+all: default;
+
 .PHONY: firmware
 firmware:
 	platformio run --target upload
@@ -24,3 +27,7 @@ flashall: firmware spiffs monitor;
 .PHONY: clean
 clean:
 	platformio run --target clean
+
+.PHONY: distclean
+distclean: clean
+	rm -rf .platformio

@@ -4,3 +4,4 @@
 .piolibdeps
 .platformio
 .vscode
+.bash_hist

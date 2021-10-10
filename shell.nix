@@ -1,8 +1,10 @@
-{ nixpkgs ? (import ./nixpkgs.nix) }:
+{}:
 let
+  sources = import ./nix/sources.nix;
+  nixpkgs = sources.nixpkgs;
   pkgs = import nixpkgs {};
-
-in pkgs.stdenv.mkDerivation rec {
+in
+  pkgs.stdenv.mkDerivation rec {
   name = "esp8266-platformio-dev-shell";
 
   src = builtins.toString ./.;
